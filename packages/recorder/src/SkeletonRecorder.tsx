@@ -1,29 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 
-// const generateSkeleton = (element: HTMLElement): string => {
-//   const children = Array.from(element.children) as HTMLElement[];
+// ایجاد انیمیشن pulse به کمک CSS-in-JS
+const pulseAnimation = `
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+`;
 
-//   // detect texts and do one liner div
-//   if (children.length === 0) {
-//     const text = element.textContent?.trim();
-//     const rect = element.getBoundingClientRect();
-//     const width = Math.round(rect.width);
-//     const height = Math.round(rect.height);
-
-//     // اگر فقط متن بود، skeleton مخصوص متن بساز
-//     if (text && text.length > 0) {
-//       return `<div className="bg-gray-200 rounded h-4 w-[${width}px]" />`;
-//     }
-
-//     // در غیر این صورت (مثلاً آیکن یا باکس خالی)، همون باکس معمولی
-//     return `<div className="bg-gray-200 rounded w-[${width}px] h-[${height}px]" />`;
-//   }
-
-//   // در غیر این صورت، recursive بچه‌ها رو بررسی کن
-//   const childSkeletons = children.map(generateSkeleton).join("\n");
-
-//   return `<div className="space-y-2">\n${childSkeletons}\n</div>`;
-// };
+// درون head قرار بده
+const injectAnimationStyle = () => {
+  if (document.getElementById("pulse-animation-style")) return;
+  const style = document.createElement("style");
+  style.id = "pulse-animation-style";
+  style.innerHTML = pulseAnimation;
+  document.head.appendChild(style);
+};
 
 const generateSkeleton = (element: HTMLElement): React.ReactNode => {
   const children = Array.from(element.children) as HTMLElement[];
@@ -32,23 +28,23 @@ const generateSkeleton = (element: HTMLElement): React.ReactNode => {
     const text = element.textContent?.trim();
     const rect = element.getBoundingClientRect();
     const width = Math.round(rect.width);
-    const height = Math.round(rect.height);
-
-    const style = {
-      width,
-      height: text ? 16 : height,
-    };
+    const height = text ? 16 : Math.round(rect.height);
 
     return (
       <div
-        style={style}
-        className="bg-gray-200 border border-red-500 rounded animate-pulse"
+        style={{
+          width,
+          height,
+          backgroundColor: "#e5e7eb", // معادل bg-gray-200
+          borderRadius: 6,
+          animation: "pulse 2s infinite",
+        }}
       />
     );
   }
 
   return (
-    <div className="space-y-2">
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       {children.map((child, i) => (
         <div key={i}>{generateSkeleton(child)}</div>
       ))}
@@ -61,30 +57,25 @@ export const SkeletonRecorder = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [skeletonJSX, setSkeletonJSX] = useState<React.ReactNode>(null);
-  const [showPreview, setShowPreview] = useState(false);
-
   const ref = useRef<HTMLDivElement>(null);
+  const [preview, setPreview] = useState<React.ReactNode | null>(null);
+
+  useEffect(() => {
+    injectAnimationStyle();
+  }, []);
 
   const handleCapture = () => {
     if (!ref.current) return;
-
-    const jsx = generateSkeleton(ref.current);
-    console.log("📸 Skeleton JSX:\n\n", jsx);
-    setSkeletonJSX(jsx);
-    setShowPreview(true);
+    const skeleton = generateSkeleton(ref.current);
+    setPreview(skeleton);
   };
-
-  useEffect(() => {
-    const fake = <div className="bg-red-500 text-white p-4">STATIC JSX</div>;
-    setSkeletonJSX(fake);
-    setShowPreview(true);
-  }, []);
 
   return (
     <div ref={ref}>
       {children}
-      {/* <button
+
+      <button
+        onClick={handleCapture}
         style={{
           position: "fixed",
           bottom: 10,
@@ -93,49 +84,33 @@ export const SkeletonRecorder = ({
           padding: "8px 12px",
           background: "#000",
           color: "#fff",
-          borderRadius: "6px",
+          borderRadius: 6,
+          cursor: "pointer",
         }}
-        onClick={handleCapture}
       >
         📸 Capture Skeleton
-      </button> */}
+      </button>
 
-      {/* {showPreview && (
+      {preview && (
         <div
           style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0,0,0,0.6)",
-            zIndex: 10000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            marginTop: 40,
+            borderTop: "1px solid #ccc",
+            paddingTop: 16,
           }}
-          onClick={() => setShowPreview(false)}
         >
-          <div
+          <h2
             style={{
-              padding: "2rem",
-              maxHeight: "80vh",
-              overflow: "auto",
-              borderRadius: "8px",
-              minWidth: "300px",
+              fontSize: "1.25rem",
+              fontWeight: "bold",
+              marginBottom: 8,
             }}
-            onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-lg font-bold mb-4">📸 Skeleton Preview</h2>
-            <div className="bg-red-500 text-white p-4">TEST FROM RECORDER</div>
-            <div className="p-4 space-y-2">{showPreview && skeletonJSX}</div>
-          </div>
+            Skeleton Preview:
+          </h2>
+          {preview}
         </div>
-      )} */}
-
-      <div className="bg-red-500 animate-pulse text-white p-4">
-        Hello from Recorder
-      </div>
+      )}
     </div>
   );
 };
