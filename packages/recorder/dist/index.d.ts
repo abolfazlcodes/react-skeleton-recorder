@@ -1,1 +1,1 @@
-export * from "./SkeletonRecorder";
+export * from "./components/SkeletonRecorder";
