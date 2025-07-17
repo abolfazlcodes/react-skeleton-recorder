@@ -65,6 +65,10 @@ importers:
         version: 5.8.3
 
   packages/recorder:
+    dependencies:
+      computed-styles:
+        specifier: ^1.1.2
+        version: 1.1.2
     devDependencies:
       '@types/react':
         specifier: ^19.1.8
@@ -934,6 +938,9 @@ packages:
   color@4.2.3:
     resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
     engines: {node: '>=12.5.0'}
+
+  computed-styles@1.1.2:
+    resolution: {integrity: sha512-CGbti1B791SKg6goVX0cSI++hFBSzY9+7+lhX8lqXDI5FHexluglI1cPtvIifS4mEcWxPJ+HKYPr2t6nqz7PxA==}
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
@@ -2797,6 +2804,8 @@ snapshots:
       color-convert: 2.0.1
       color-string: 1.9.1
     optional: true
+
+  computed-styles@1.1.2: {}
 
   concat-map@0.0.1: {}
 

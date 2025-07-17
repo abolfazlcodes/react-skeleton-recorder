@@ -1,31 +1,60 @@
 import React from "react";
 
+const parsePx = (value: string | null) => {
+  if (!value) return 0;
+  return parseFloat(value.replace("px", "")) || 0;
+};
+
 export const generateSkeleton = (element: HTMLElement): React.ReactNode => {
   const children = Array.from(element.children) as HTMLElement[];
+  const computedStyles = getComputedStyle(element);
+
+  const paddingTop = parsePx(computedStyles.paddingTop);
+  const paddingBottom = parsePx(computedStyles.paddingBottom);
+  const paddingLeft = parsePx(computedStyles.paddingLeft);
+  const paddingRight = parsePx(computedStyles.paddingRight);
+  const borderRadius = computedStyles.borderRadius;
+
+  const height = parsePx(computedStyles.height);
+  const width = parsePx(computedStyles.width);
+
+  const contentHeight = Math.max(height - (paddingTop + paddingBottom), 0);
+  const contentWidth = Math.max(width - (paddingLeft + paddingRight), 0);
+
+  console.log(computedStyles, "computed", element);
 
   if (children.length === 0) {
-    const text = element.textContent?.trim();
-    const rect = element.getBoundingClientRect();
-    const width = Math.round(rect.width);
-    const height = text ? 16 : Math.round(rect.height);
-
     return (
       <div
         style={{
-          width,
-          height,
-          backgroundColor: "#e5e7eb",
-          borderRadius: 6,
-          animation: "pulse 2s infinite",
+          // ...computedStyles,
+          backgroundColor: "red",
+          padding: computedStyles.padding,
+          borderRadius: borderRadius,
+          height: contentHeight,
+          width: contentWidth,
+          rowGap: computedStyles?.rowGap,
+          boxSizing: "border-box",
         }}
       />
     );
   }
 
+  // اگر فرزند داره، خودش رو رندر کن و داخلش بچه‌ها رو بازگشتی رندر کن
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+    <div
+      style={{
+        padding: computedStyles.padding,
+        borderRadius: borderRadius,
+        height: contentHeight,
+        width: contentWidth,
+        boxSizing: "border-box",
+        backgroundColor: "#ccc",
+        animation: "pulse 2s infinite",
+      }}
+    >
       {children.map((child, i) => (
-        <div key={i}>{generateSkeleton(child)}</div>
+        <React.Fragment key={i}>{generateSkeleton(child)}</React.Fragment>
       ))}
     </div>
   );

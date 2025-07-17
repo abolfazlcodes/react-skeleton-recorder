@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  cloneElement,
+  isValidElement,
+} from "react";
 import { injectPulseAnimation } from "../utils/injectPulseAnimation";
 import { generateSkeleton } from "../utils/generateSkeleton";
 import { SkeletonRenderer } from "./SkeletonRenderer";
@@ -18,7 +24,7 @@ export const SkeletonRecorder = ({
   devMode,
   onCapture,
 }: Props) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLElement | null>(null);
   const [preview, setPreview] = useState<React.ReactNode | null>(null);
 
   useEffect(() => {
@@ -26,26 +32,48 @@ export const SkeletonRecorder = ({
   }, []);
 
   const handleCapture = () => {
-    if (!ref.current) return;
-    const skeleton = generateSkeleton(ref.current);
+    if (!targetRef.current) return;
+    const skeleton = generateSkeleton(targetRef.current);
     setPreview(skeleton);
     onCapture?.(skeleton);
+    console.log(skeleton, "skeleton");
   };
 
-  // حالت runtime
+  const renderWithRef = () => {
+    if (
+      isValidElement(children) &&
+      typeof children.type === "string" // یعنی DOM tag هست مثل 'div'
+    ) {
+      return cloneElement(children as React.ReactElement<any>, {
+        ref: (node: HTMLElement | null) => {
+          if (node) targetRef.current = node;
+        },
+      });
+    }
+
+    return (
+      <div
+        ref={(node) => {
+          if (node) targetRef.current = node;
+        }}
+      >
+        {children}
+      </div>
+    );
+  };
+
   if (typeof isLoading === "boolean") {
-    if (isLoading && ref.current) {
-      const skeleton = generateSkeleton(ref.current);
+    if (isLoading && targetRef.current) {
+      const skeleton = generateSkeleton(targetRef.current);
       return <>{skeleton}</>;
     } else {
       return <>{children}</>;
     }
   }
 
-  // حالت devMode
   return (
-    <div ref={ref}>
-      {children}
+    <>
+      {renderWithRef()}
       {devMode && (
         <button
           onClick={handleCapture}
@@ -65,6 +93,6 @@ export const SkeletonRecorder = ({
         </button>
       )}
       {preview && devMode && <SkeletonRenderer skeleton={preview} />}
-    </div>
+    </>
   );
 };
