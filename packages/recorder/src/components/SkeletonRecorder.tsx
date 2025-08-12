@@ -39,14 +39,20 @@ export const SkeletonRecorder = ({
     console.log(skeleton, "skeleton");
   };
 
-  const renderWithRef = () => {
+  const renderWithRef = (hidden: boolean) => {
     if (
       isValidElement(children) &&
       typeof children.type === "string" // یعنی DOM tag هست مثل 'div'
     ) {
-      return cloneElement(children as React.ReactElement<any>, {
+      const childEl = children as React.ReactElement<any>;
+      const existingStyle = (childEl.props && childEl.props.style) || {};
+      return cloneElement(childEl, {
         ref: (node: HTMLElement | null) => {
           if (node) targetRef.current = node;
+        },
+        style: {
+          ...existingStyle,
+          visibility: hidden ? "hidden" : existingStyle.visibility || undefined,
         },
       });
     }
@@ -56,24 +62,21 @@ export const SkeletonRecorder = ({
         ref={(node) => {
           if (node) targetRef.current = node;
         }}
+        style={{ visibility: hidden ? "hidden" : undefined }}
       >
         {children}
       </div>
     );
   };
 
-  if (typeof isLoading === "boolean") {
-    if (isLoading && targetRef.current) {
-      const skeleton = generateSkeleton(targetRef.current);
-      return <>{skeleton}</>;
-    } else {
-      return <>{children}</>;
-    }
-  }
-
   return (
     <>
-      {renderWithRef()}
+      {/* Always render the children (hidden during loading) so we can measure DOM */}
+      {renderWithRef(Boolean(isLoading))}
+
+      {/* Swap in skeleton when loading */}
+      {isLoading && targetRef.current && generateSkeleton(targetRef.current)}
+
       {devMode && (
         <button
           onClick={handleCapture}
