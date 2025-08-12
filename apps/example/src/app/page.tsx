@@ -1,18 +1,30 @@
 "use client";
 
 import { SkeletonRecorder } from "@recorder/core";
+import { useState } from "react";
 
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
   return (
     <main className="p-6 bg-gray-50 min-h-screen">
       <section className="max-w-2xl mx-auto space-y-12">
-        <h1 className="text-2xl font-semibold">Demo cards</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Demo cards</h1>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-gray-600">isLoading</span>
+            <input
+              type="checkbox"
+              checked={isLoading}
+              onChange={(e) => setIsLoading(e.target.checked)}
+            />
+          </div>
+        </div>
 
         {/* LinkedIn-style post */}
         <div>
           <h2 className="text-lg font-medium mb-3">LinkedIn post</h2>
-          <SkeletonRecorder devMode>
+          <SkeletonRecorder isLoading={isLoading}>
             <article className="bg-white border rounded-xl p-4 space-y-4">
               {/* Header */}
               <div className="flex items-start gap-3">
@@ -64,7 +76,7 @@ export default function Home() {
         {/* Instagram-style post */}
         <div>
           <h2 className="text-lg font-medium mb-3">Instagram post</h2>
-          <SkeletonRecorder devMode>
+          <SkeletonRecorder isLoading={isLoading}>
             <article className="bg-white border rounded-xl overflow-hidden">
               {/* Header */}
               <div className="flex items-center justify-between p-4">

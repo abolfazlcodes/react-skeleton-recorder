@@ -18,32 +18,29 @@ export const SkeletonRecorder = ({ children, isLoading, devMode, onCapture, }) =
         onCapture?.(skeleton);
         console.log(skeleton, "skeleton");
     };
-    const renderWithRef = () => {
+    const renderWithRef = (hidden) => {
         if (isValidElement(children) &&
             typeof children.type === "string" // یعنی DOM tag هست مثل 'div'
         ) {
-            return cloneElement(children, {
+            const childEl = children;
+            const existingStyle = (childEl.props && childEl.props.style) || {};
+            return cloneElement(childEl, {
                 ref: (node) => {
                     if (node)
                         targetRef.current = node;
+                },
+                style: {
+                    ...existingStyle,
+                    visibility: hidden ? "hidden" : existingStyle.visibility || undefined,
                 },
             });
         }
         return (_jsx("div", { ref: (node) => {
                 if (node)
                     targetRef.current = node;
-            }, children: children }));
+            }, style: { visibility: hidden ? "hidden" : undefined }, children: children }));
     };
-    if (typeof isLoading === "boolean") {
-        if (isLoading && targetRef.current) {
-            const skeleton = generateSkeleton(targetRef.current);
-            return _jsx(_Fragment, { children: skeleton });
-        }
-        else {
-            return _jsx(_Fragment, { children: children });
-        }
-    }
-    return (_jsxs(_Fragment, { children: [renderWithRef(), devMode && (_jsx("button", { onClick: handleCapture, style: {
+    return (_jsxs(_Fragment, { children: [renderWithRef(Boolean(isLoading)), isLoading && targetRef.current && generateSkeleton(targetRef.current), devMode && (_jsx("button", { onClick: handleCapture, style: {
                     position: "fixed",
                     bottom: 10,
                     right: 10,
