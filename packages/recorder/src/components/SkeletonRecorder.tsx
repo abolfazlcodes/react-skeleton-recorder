@@ -52,7 +52,7 @@ export const SkeletonRecorder = ({
         },
         style: {
           ...existingStyle,
-          visibility: hidden ? "hidden" : existingStyle.visibility || undefined,
+          display: hidden ? "none" : existingStyle.display || undefined,
         },
       });
     }
@@ -62,7 +62,7 @@ export const SkeletonRecorder = ({
         ref={(node) => {
           if (node) targetRef.current = node;
         }}
-        style={{ visibility: hidden ? "hidden" : undefined }}
+        style={{ display: hidden ? "none" : undefined }}
       >
         {children}
       </div>

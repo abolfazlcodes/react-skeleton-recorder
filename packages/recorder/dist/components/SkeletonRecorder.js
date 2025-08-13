@@ -31,14 +31,14 @@ export const SkeletonRecorder = ({ children, isLoading, devMode, onCapture, }) =
                 },
                 style: {
                     ...existingStyle,
-                    visibility: hidden ? "hidden" : existingStyle.visibility || undefined,
+                    display: hidden ? "none" : existingStyle.display || undefined,
                 },
             });
         }
         return (_jsx("div", { ref: (node) => {
                 if (node)
                     targetRef.current = node;
-            }, style: { visibility: hidden ? "hidden" : undefined }, children: children }));
+            }, style: { display: hidden ? "none" : undefined }, children: children }));
     };
     return (_jsxs(_Fragment, { children: [renderWithRef(Boolean(isLoading)), isLoading && targetRef.current && generateSkeleton(targetRef.current), devMode && (_jsx("button", { onClick: handleCapture, style: {
                     position: "fixed",
