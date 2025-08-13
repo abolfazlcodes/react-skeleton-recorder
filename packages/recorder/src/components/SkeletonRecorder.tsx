@@ -75,7 +75,11 @@ export const SkeletonRecorder = ({
       {renderWithRef(Boolean(isLoading))}
 
       {/* Swap in skeleton when loading */}
-      {isLoading && targetRef.current && generateSkeleton(targetRef.current)}
+      {isLoading && targetRef.current && (
+        <div aria-busy="true" aria-live="polite">
+          {generateSkeleton(targetRef.current)}
+        </div>
+      )}
 
       {devMode && (
         <button

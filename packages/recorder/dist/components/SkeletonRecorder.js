@@ -40,7 +40,7 @@ export const SkeletonRecorder = ({ children, isLoading, devMode, onCapture, }) =
                     targetRef.current = node;
             }, style: { display: hidden ? "none" : undefined }, children: children }));
     };
-    return (_jsxs(_Fragment, { children: [renderWithRef(Boolean(isLoading)), isLoading && targetRef.current && generateSkeleton(targetRef.current), devMode && (_jsx("button", { onClick: handleCapture, style: {
+    return (_jsxs(_Fragment, { children: [renderWithRef(Boolean(isLoading)), isLoading && targetRef.current && (_jsx("div", { "aria-busy": "true", "aria-live": "polite", children: generateSkeleton(targetRef.current) })), devMode && (_jsx("button", { onClick: handleCapture, style: {
                     position: "fixed",
                     bottom: 10,
                     right: 10,
