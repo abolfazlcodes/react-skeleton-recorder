@@ -2,6 +2,7 @@
 
 import InstagramCard from "@/components/InstagramCard";
 import LinkedInCard from "@/components/LinkedInCard";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { SkeletonRecorder } from "@recorder/core";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ export default function Home() {
           </div>
         </div>
 
+        <ThemeToggle />
         {/* LinkedIn-style post */}
         <div>
           <h2 className="text-lg font-medium mb-3">LinkedIn post</h2>

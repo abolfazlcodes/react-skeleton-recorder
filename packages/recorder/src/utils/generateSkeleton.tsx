@@ -96,9 +96,16 @@ export const generateSkeleton = (
   const layoutStyles = copyLayoutStyles(computedStyles);
   const isLeaf = children.length === 0;
 
-  const color = getComputedStyle(document.documentElement)
-    .getPropertyValue("--skeleton-base-color")
-    .trim() || "#e5e7eb";
+  const resolveSkeletonColor = (el: Element): string => {
+    const fromEl = getComputedStyle(el).getPropertyValue("--skeleton-base-color").trim();
+    if (fromEl) return fromEl;
+    const fromRoot = getComputedStyle(document.documentElement)
+      .getPropertyValue("--skeleton-base-color")
+      .trim();
+    return fromRoot || "#e5e7eb";
+  };
+
+  const color = resolveSkeletonColor(element);
 
   // Positioning for absolutely positioned elements
   const isAbsolutelyPositioned = computedStyles.position === "absolute";

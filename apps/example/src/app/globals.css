@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+/* Skeleton theme variables (light/dark and custom palettes) */
+:root {
+	--skeleton-base-color: #e5e7eb; /* default light */
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--skeleton-base-color: rgba(255, 255, 255, 0.14);
+	}
+}
+
+/* Optional explicit theme hooks (app can toggle data-theme) */
+:root[data-theme="light"] {
+	--skeleton-base-color: #e5e7eb;
+}
+
+:root[data-theme="dark"] {
+	/* darker neutral to ensure visibility on typical dark surfaces */
+	--skeleton-base-color: #374151; /* slate-700 */
+}

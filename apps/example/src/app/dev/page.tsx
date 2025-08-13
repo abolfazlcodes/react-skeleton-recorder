@@ -1,10 +1,12 @@
 "use client";
 
 import { SkeletonRecorder } from "@recorder/core";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function DevPage() {
   return (
     <main className="p-6 bg-gray-50 min-h-screen">
+      <ThemeToggle />
       <section className="max-w-2xl mx-auto space-y-8">
         <h1 className="text-2xl font-semibold">Skeleton Dev Tools</h1>
         <p className="text-sm text-gray-600">
