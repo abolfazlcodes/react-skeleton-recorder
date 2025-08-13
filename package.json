@@ -1,7 +1,7 @@
 {
   "name": "react-skeleton-recorder",
   "version": "1.0.0",
-  "description": "",
+  "description": "It is a simple package with zero configuration for usage. It creates skeleton loadings when wrapped around the DOM elements automatically",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +12,7 @@
     "apps/*"
   ],
   "keywords": [],
-  "author": "",
+  "author": "Abolfazl Jamshidi",
   "license": "ISC",
   "packageManager": "pnpm@10.12.4",
   "devDependencies": {
