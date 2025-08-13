@@ -28,10 +28,10 @@ export default function Home() {
           <SkeletonRecorder isLoading={isLoading}>
             <div className="space-y-4">
               <LinkedInCard />
+              {/* <LinkedInCard />
               <LinkedInCard />
               <LinkedInCard />
-              <LinkedInCard />
-              <LinkedInCard />
+              <LinkedInCard /> */}
             </div>
           </SkeletonRecorder>
         </div>
@@ -42,8 +42,8 @@ export default function Home() {
           <SkeletonRecorder isLoading={isLoading}>
             <div className="space-y-4">
               <InstagramCard />
-              <InstagramCard />
-              <InstagramCard />
+              {/* <InstagramCard />
+              <InstagramCard /> */}
             </div>
           </SkeletonRecorder>
         </div>
