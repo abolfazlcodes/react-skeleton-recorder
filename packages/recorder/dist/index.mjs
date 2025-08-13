@@ -1,41 +1,11 @@
-"use strict";
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/index.tsx
-var index_exports = {};
-__export(index_exports, {
-  SkeletonRecorder: () => SkeletonRecorder
-});
-module.exports = __toCommonJS(index_exports);
-
 // src/components/SkeletonRecorder.tsx
-var import_react2 = require("react");
+import {
+  useEffect,
+  useRef,
+  useState,
+  cloneElement,
+  isValidElement
+} from "react";
 
 // src/utils/injectPulseAnimation.ts
 var injectPulseAnimation = () => {
@@ -55,8 +25,8 @@ var injectPulseAnimation = () => {
 };
 
 // src/utils/generateSkeleton.tsx
-var import_react = __toESM(require("react"));
-var import_jsx_runtime = require("react/jsx-runtime");
+import React from "react";
+import { jsx } from "react/jsx-runtime";
 var parsePx = (value) => {
   if (!value) return 0;
   return parseFloat(value.replace("px", "")) || 0;
@@ -173,7 +143,7 @@ var generateSkeleton = (element, parentRect) => {
         const isLast = idx === lineCount - 1;
         const baseWidthRatio = isLast ? 0.6 + r * 0.2 : 0.85 + r * 0.1;
         const lineWidth = Math.max(24, Math.round(contentWidth * baseWidthRatio));
-        return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+        return /* @__PURE__ */ jsx(
           "div",
           {
             "aria-hidden": "true",
@@ -211,7 +181,7 @@ var generateSkeleton = (element, parentRect) => {
         textContainer.left = px(rect.left - parentRect.left);
         textContainer.top = px(rect.top - parentRect.top);
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { "aria-hidden": "true", style: textContainer, children: lines });
+      return /* @__PURE__ */ jsx("div", { "aria-hidden": "true", style: textContainer, children: lines });
     }
     if (isAbsolutelyPositioned && parentRect) {
       leafStyles.position = "absolute";
@@ -228,7 +198,7 @@ var generateSkeleton = (element, parentRect) => {
       leafStyles.left = px(rect.left - parentRect.left);
       leafStyles.top = px(rect.top - parentRect.top);
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { "aria-hidden": "true", style: leafStyles });
+    return /* @__PURE__ */ jsx("div", { "aria-hidden": "true", style: leafStyles });
   }
   const containerStyles = {
     ...layoutStyles,
@@ -237,15 +207,15 @@ var generateSkeleton = (element, parentRect) => {
     // Always relative to position absolute children correctly
     position: "relative"
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { "aria-hidden": "true", style: containerStyles, children: children.map((child, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react.default.Fragment, { children: generateSkeleton(child, rect) }, i)) });
+  return /* @__PURE__ */ jsx("div", { "aria-hidden": "true", style: containerStyles, children: children.map((child, i) => /* @__PURE__ */ jsx(React.Fragment, { children: generateSkeleton(child, rect) }, i)) });
 };
 
 // src/components/SkeletonRenderer.tsx
-var import_jsx_runtime2 = require("react/jsx-runtime");
+import { jsx as jsx2, jsxs } from "react/jsx-runtime";
 var SkeletonRenderer = ({
   skeleton
 }) => {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+  return /* @__PURE__ */ jsxs(
     "div",
     {
       style: {
@@ -254,7 +224,7 @@ var SkeletonRenderer = ({
         paddingTop: 16
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+        /* @__PURE__ */ jsx2(
           "h2",
           {
             style: {
@@ -272,16 +242,16 @@ var SkeletonRenderer = ({
 };
 
 // src/components/SkeletonRecorder.tsx
-var import_jsx_runtime3 = require("react/jsx-runtime");
+import { Fragment, jsx as jsx3, jsxs as jsxs2 } from "react/jsx-runtime";
 var SkeletonRecorder = ({
   children,
   isLoading,
   devMode,
   onCapture
 }) => {
-  const targetRef = (0, import_react2.useRef)(null);
-  const [preview, setPreview] = (0, import_react2.useState)(null);
-  (0, import_react2.useEffect)(() => {
+  const targetRef = useRef(null);
+  const [preview, setPreview] = useState(null);
+  useEffect(() => {
     injectPulseAnimation();
   }, []);
   const handleCapture = () => {
@@ -292,10 +262,10 @@ var SkeletonRecorder = ({
     console.log(skeleton, "skeleton");
   };
   const renderWithRef = (hidden) => {
-    if ((0, import_react2.isValidElement)(children) && typeof children.type === "string") {
+    if (isValidElement(children) && typeof children.type === "string") {
       const childEl = children;
       const existingStyle = childEl.props && childEl.props.style || {};
-      return (0, import_react2.cloneElement)(childEl, {
+      return cloneElement(childEl, {
         ref: (node) => {
           if (node) targetRef.current = node;
         },
@@ -305,7 +275,7 @@ var SkeletonRecorder = ({
         }
       });
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+    return /* @__PURE__ */ jsx3(
       "div",
       {
         ref: (node) => {
@@ -316,10 +286,10 @@ var SkeletonRecorder = ({
       }
     );
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
+  return /* @__PURE__ */ jsxs2(Fragment, { children: [
     renderWithRef(Boolean(isLoading)),
-    isLoading && targetRef.current && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { "aria-busy": "true", "aria-live": "polite", children: generateSkeleton(targetRef.current) }),
-    devMode && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+    isLoading && targetRef.current && /* @__PURE__ */ jsx3("div", { "aria-busy": "true", "aria-live": "polite", children: generateSkeleton(targetRef.current) }),
+    devMode && /* @__PURE__ */ jsx3(
       "button",
       {
         onClick: handleCapture,
@@ -337,10 +307,9 @@ var SkeletonRecorder = ({
         children: "\u{1F4F8} Capture Skeleton"
       }
     ),
-    preview && devMode && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(SkeletonRenderer, { skeleton: preview })
+    preview && devMode && /* @__PURE__ */ jsx3(SkeletonRenderer, { skeleton: preview })
   ] });
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
+export {
   SkeletonRecorder
-});
+};

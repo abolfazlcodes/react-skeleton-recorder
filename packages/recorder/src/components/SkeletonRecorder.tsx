@@ -40,10 +40,7 @@ export const SkeletonRecorder = ({
   };
 
   const renderWithRef = (hidden: boolean) => {
-    if (
-      isValidElement(children) &&
-      typeof children.type === "string" // یعنی DOM tag هست مثل 'div'
-    ) {
+    if (isValidElement(children) && typeof children.type === "string") {
       const childEl = children as React.ReactElement<any>;
       const existingStyle = (childEl.props && childEl.props.style) || {};
       return cloneElement(childEl, {
