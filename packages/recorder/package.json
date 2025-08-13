@@ -1,10 +1,20 @@
 {
   "name": "@recorder/core",
   "version": "0.0.1",
+  "description": "Automatic skeleton loader generator for React UIs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "react",
+    "skeleton",
+    "loading",
+    "skeleton-loader",
+    "placeholder",
+    "ui"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json"
@@ -21,5 +31,6 @@
   },
   "dependencies": {
     "computed-styles": "^1.1.2"
-  }
+  },
+  "license": "MIT"
 }
