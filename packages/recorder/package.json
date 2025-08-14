@@ -1,6 +1,6 @@
 {
   "name": "react-skelify",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "It is a simple package with zero configuration for usage. It creates skeleton loadings when wrapped around the DOM elements automatically",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
