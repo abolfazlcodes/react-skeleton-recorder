@@ -23,9 +23,6 @@ importers:
 
   apps/example:
     dependencies:
-      '@recorder/core':
-        specifier: workspace:*
-        version: link:../../packages/recorder
       next:
         specifier: 15.3.5
         version: 15.3.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -35,6 +32,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
+      react-skelify:
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3
