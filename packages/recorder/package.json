@@ -1,5 +1,5 @@
 {
-  "name": "@recorder/core",
+  "name": "react-skelify",
   "version": "1.0.1",
   "description": "Automatic skeleton loader generator for React UIs.",
   "main": "dist/index.js",
