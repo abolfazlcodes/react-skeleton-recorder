@@ -1,7 +1,7 @@
 {
   "name": "react-skelify",
-  "version": "1.0.1",
-  "description": "Automatic skeleton loader generator for React UIs.",
+  "version": "1.0.2",
+  "description": "It is a simple package with zero configuration for usage. It creates skeleton loadings when wrapped around the DOM elements automatically",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -10,6 +10,7 @@
     "dist"
   ],
   "sideEffects": false,
+  "author": "Abolfazl Jamshidi",
   "keywords": [
     "react",
     "skeleton",
