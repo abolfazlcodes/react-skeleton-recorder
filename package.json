@@ -1,6 +1,6 @@
 {
   "name": "react-skeleton-recorder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "It is a simple package with zero configuration for usage. It creates skeleton loadings when wrapped around the DOM elements automatically",
   "main": "index.js",
   "scripts": {
