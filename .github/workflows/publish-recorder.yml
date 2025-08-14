@@ -3,7 +3,7 @@ name: Publish @recorder/core
 on:
   push:
     tags:
-      - "recorder-v*" # e.g. recorder-v0.0.2
+      - "*"
 
 jobs:
   publish:
